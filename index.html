@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Pacotes e Paradas - ML Deluna</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <img src="IMG_20250816_204625.jpg" alt="Logo ML Deluna" class="logo">
+        <h1>Registros</h1>
+        <div class="tabs">
+            <button class="tab-button active" data-tab="paradas">Paradas</button>
+            <button class="tab-button" data-tab="pacotes">Pacotes</button>
+            <button class="tab-button" data-tab="gains">Ganhos</button>
+        </div>
+        <div id="paradas" class="tab-content active">
+            <div class="form form-paradas">
+                <input type="number" id="stopNumber" placeholder="Número da Parada" required min="1">
+                <input type="number" id="quantity-paradas" placeholder="Quantidade de Pacotes" required min="0">
+                <button id="saveStopBtn">Salvar Parada</button>
+            </div>
+            <div class="button-group">
+                <button id="finishRouteBtn">Finalizar Rota</button>
+            </div>
+            <div class="total-container">
+                <div class="total-info">Quantidade total: <span id="totalStopsCount" class="total-value">0</span></div>
+            </div>
+            <div class="table-container">
+                <table id="stopsTable">
+                    <thead>
+                        <tr>
+                            <th>Parada</th>
+                            <th>QTD</th>
+                            <th>Observação</th>
+                            <th>Foto</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="stopsTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="pacotes" class="tab-content">
+            <div class="form">
+                <input type="date" id="date-pacotes" required>
+                <input type="number" id="quantity-pacotes" placeholder="Quantidade de Pacotes" required min="0">
+                <input type="text" id="route-pacotes" placeholder="Rota" required>
+                <input type="text" id="driver-pacotes" list="driver-list" placeholder="Nome do Motorista" required>
+                <datalist id="driver-list"></datalist>
+                <button id="addRecordBtn">Adicionar</button>
+            </div>
+            <div class="button-group">
+                <button id="exportBtn">Exportar Dados</button>
+                <button id="importBtn">Importar Dados</button>
+                <input type="file" id="file-input" accept=".json" class="hidden-file-input">
+            </div>
+            <div class="total-container">
+                <input type="date" id="total-date-filter">
+                <div class="total-info">Total de pacotes: <span id="totalPackagesCount" class="total-value">0</span></div>
+            </div>
+            <div class="table-container">
+                <table id="recordsTable">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Rota</th>
+                            <th>Motorista</th>
+                            <th>QTD</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="gains" class="tab-content">
+            <h2>Ganhos por Semana</h2>
+            <div class="table-container">
+                <table class="gains-table">
+                    <thead>
+                        <tr>
+                            <th>Data</th>
+                            <th>Pacotes</th>
+                            <th>Ganhos (R$)</th>
+                        </tr>
+                    </thead>
+                    <tbody id="gainsTableBody"></tbody>
+                </table>
+            </div>
+        </div>
+        <div id="routeDetails" class="tab-content">
+            <h2>Detalhes da Rota: <span id="routeDetailsTitle"></span></h2>
+            <div class="total-container">
+                <div class="total-info">Total de pacotes: <span id="totalRouteDetailsCount" class="total-value">0</span></div>
+                <div class="total-info">Total de insucessos: <span id="totalInsucessoCount" class="total-value total-insucesso">0</span></div>
+            </div>
+            <div class="table-container">
+                <table id="detailsTable">
+                    <thead>
+                        <tr>
+                            <th>Parada</th>
+                            <th>QTD</th>
+                            <th>Observação</th>
+                            <th>Foto</th>
+                        </tr>
+                    </thead>
+                    <tbody id="routeDetailsTableBody"></tbody>
+                </table>
+            </div>
+            <button id="backBtn">Voltar</button>
+        </div>
+    </div>
+    
+    <div id="customPopupOverlay" class="custom-popup-overlay">
+        <div class="custom-popup">
+            <div class="custom-popup-content">
+                <h3 id="popupDate"></h3>
+                <p id="popupValue"></p>
+                <div class="button-group">
+                    <button onclick="closeCustomPopup()">Fechar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div id="observationPopupOverlay" class="observation-popup">
+        <div class="observation-popup-content">
+            <h3>Observação da Parada</h3>
+            <div class="observation-options">
+                <button onclick="addObservationText('Mochila')">Mochila</button>
+                <button onclick="addObservationText('Grande')">Grande</button>
+            </div>
+            <textarea id="observationTextarea"></textarea>
+            <div class="observation-popup-actions">
+                <button onclick="saveObservation()">Salvar</button>
+                <button onclick="closeObservationPopup()">Cancelar</button>
+            </div>
+        </div>
+    </div>
+    
+    <div id="fullPhotoPopupOverlay" class="custom-popup-overlay" onclick="closeFullPhotoPopup()">
+        <div class="custom-popup-content" onclick="event.stopPropagation();">
+            <img id="fullPhoto" src="" style="max-width: 90vw; max-height: 90vh; object-fit: contain;">
+            <span class="close-btn" onclick="closeFullPhotoPopup();">X</span>
+        </div>
+    </div>
+    
+    <script src="script.js"></script>
+</body>
+</html>
